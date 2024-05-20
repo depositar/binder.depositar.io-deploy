@@ -1,0 +1,48 @@
+binderhub:
+  registry:
+    url:
+    username: <username>
+    password: <password>
+  image:
+    name: quay.io/depositar/k8s-binderhub
+    tag: "1.0.0-0.dev.depositar.git.3460.h4951e8b"
+  config:
+    BinderHub:
+      use_registry: true
+      build_image: quay.io/depositar/repo2docker:2024.03.0-depositar.3
+      # hub_url:
+      image_prefix: <docker-id OR organization-name>/<prefix>-
+      banner_message: |
+        <div style="text-align:center;">
+        <a href="https://data.depositar.io/" target="_blank">研究資料寄存所</a> Binder 服務 | The Binder service for the <a href="https://data.depositar.io/" target="_blank"><i>depositar</i></a>
+        </div>
+      about_message: |
+        <p>Preview version</p>
+  jupyterhub:
+    imagePullSecrets: [{"name":"jupyterhub-image-pull-config"}]
+    cull:
+      every: 660
+      timeout: 600
+      maxAge: 21600
+    singleuser:
+      memory:
+        limit: 2G
+        guarantee: 1G
+      cpu:
+        limit: 1
+        guarantee: .5
+      extraFiles:
+        jupyter_notebook_config.json:
+          mountPath: /etc/jupyter/jupyter_notebook_config.json
+          data:
+            MappingKernelManager:
+              cull_idle_timeout: 600
+              cull_interval: 120
+              cull_connected: true
+      extraResource:
+        limits:
+          ephemeral-storage: '2Gi'
+        guarantees:
+          ephemeral-storage: '2Gi'
+ingress-nginx:
+  enabled: false

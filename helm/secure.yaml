@@ -1,0 +1,21 @@
+binderhub:
+  config:
+    BinderHub:
+      hub_url: https://hub.binder.depositar.io
+  jupyterhub:
+    ingress:
+      annotations:
+        kubernetes.io/tls-acme: "true"
+        cert-manager.io/issuer: letsencrypt-production
+      tls:
+         - secretName: hub-binder-depositar-io-tls
+           hosts:
+            - hub.binder.depositar.io
+  ingress:
+    annotations:
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/issuer: letsencrypt-production
+    tls:
+      - secretName: binder-depositar-io-tls
+        hosts:
+          - binder.depositar.io

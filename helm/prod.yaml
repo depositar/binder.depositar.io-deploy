@@ -1,0 +1,74 @@
+binderhub:
+  image:
+    name: quay.io/depositar/k8s-binderhub
+    tag: "1.0.0-0.dev.depositar.git.3460.h4951e8b"
+  imageBuilderType: dind
+  config:
+    BinderHub:
+      use_registry: true
+      build_image: quay.io/depositar/repo2docker:2024.03.0-depositar.3
+      hub_url: http://hub.binder.depositar.io
+      image_prefix: harbor.depositar.io/binder-images/binder-
+      cors_allow_origin: '*'
+      banner_message: |
+        <div style="text-align:center;">
+        <a href="https://data.depositar.io/" target="_blank">研究資料寄存所</a> Binder 服務 | The Binder service for the <a href="https://data.depositar.io/" target="_blank"><i>depositar</i></a>
+        </div>
+      about_message: |
+        <p>Preview version</p>
+    DockerRegistry:
+      url: https://harbor.depositar.io
+      token_url: https://harbor.depositar.io/service/token?service=harbor-registry
+    service:
+      type: ClusterIP
+  jupyterhub:
+    imagePullSecrets: [{"name":"jupyterhub-image-pull-config"}]
+    cull:
+      every: 660
+      timeout: 600
+      maxAge: 21600
+    hub:
+      config:
+        BinderSpawner:
+          cors_allow_origin: '*'
+    proxy:
+      service:
+        type: ClusterIP
+    ingress:
+      enabled: true
+      hosts:
+        - hub.binder.depositar.io
+      annotations:
+        kubernetes.io/ingress.class: nginx
+    singleuser:
+      memory:
+        limit: 2G
+        guarantee: 1G
+      cpu:
+        limit: 1
+        guarantee: .5
+      extraFiles:
+        jupyter_notebook_config.json:
+          mountPath: /etc/jupyter/jupyter_notebook_config.json
+          data:
+            MappingKernelManager:
+              cull_idle_timeout: 600
+              cull_interval: 120
+              cull_connected: true
+      extraResource:
+        limits:
+          ephemeral-storage: '2Gi'
+        guarantees:
+          ephemeral-storage: '2Gi'
+  ingress:
+    enabled: true
+    hosts:
+       - binder.depositar.io
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      ingress.kubernetes.io/proxy-body-size: 64m
+ingress-nginx:
+  enabled: true
+  controller:
+    service:
+      loadBalancerIP: 140.109.100.217

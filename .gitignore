@@ -1,0 +1,3 @@
+git_crypt_secret_key
+helm/**/*.tgz
+helm/Chart.lock

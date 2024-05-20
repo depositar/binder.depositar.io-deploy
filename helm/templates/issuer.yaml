@@ -1,0 +1,18 @@
+{{- with .Values.binderhub }}
+{{- if or .jupyterhub.ingress.tls .ingress.tls }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    email: data.contact@depositar.io
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: nginx
+{{- end }}
+{{- end }}
