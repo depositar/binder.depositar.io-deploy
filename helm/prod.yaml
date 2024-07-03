@@ -40,6 +40,7 @@ binderhub:
         - hub.binder.depositar.io
       annotations:
         kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/proxy-body-size: 64m
     singleuser:
       memory:
         limit: 2G
@@ -66,7 +67,7 @@ binderhub:
        - binder.depositar.io
     annotations:
       kubernetes.io/ingress.class: nginx
-      ingress.kubernetes.io/proxy-body-size: 64m
+      nginx.ingress.kubernetes.io/proxy-body-size: 64m
 ingress-nginx:
   enabled: true
   controller:
