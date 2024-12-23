@@ -23,11 +23,11 @@ version: 0.1.0
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
 
-kubeVersion: ">= 1.28.2"
+kubeVersion: ">= 1.27.0"
 
 dependencies:
   - name: binderhub
-    version: "1.0.0-0.dev.git.3431.h8a8a59e"
+    version: "1.0.0-0.dev.git.3454.hc6c5dc8"
     repository: "https://jupyterhub.github.io/helm-chart"
   - name: ingress-nginx
     version: "4.10.1"

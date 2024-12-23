@@ -4,12 +4,12 @@ binderhub:
     username: <username>
     password: <password>
   image:
-    name: quay.io/depositar/k8s-binderhub
-    tag: "1.0.0-0.dev.depositar.git.3460.h4951e8b"
+    name: quay.io/jupyterhub/k8s-binderhub
+    tag: "1.0.0-0.dev.git.3506.hba24eb2a"
   config:
     BinderHub:
       use_registry: true
-      build_image: quay.io/depositar/repo2docker:2024.03.0-depositar.3
+      build_image: quay.io/jupyterhub/repo2docker:2024.07.0-26.g4302a97
       # hub_url:
       image_prefix: <docker-id OR organization-name>/<prefix>-
       banner_message: |
